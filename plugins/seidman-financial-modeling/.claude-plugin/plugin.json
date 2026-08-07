@@ -1,0 +1,20 @@
+{
+  "name": "seidman-financial-modeling",
+  "description": "Standards and builders for board-room and PE-diligence grade financial models in Excel: universal Foundation standards, an independent model Auditor, and 13-week direct-method cash flow builders for A/R and A/P.",
+  "author": {
+    "name": "Carl Seidman"
+  },
+  "repository": "https://github.com/carlmsu1/seidman-fpa-skills",
+  "keywords": [
+    "fpa",
+    "financial-modeling",
+    "excel",
+    "cash-flow",
+    "13-week",
+    "accounts-receivable",
+    "accounts-payable",
+    "restructuring",
+    "turnaround",
+    "audit"
+  ]
+}
