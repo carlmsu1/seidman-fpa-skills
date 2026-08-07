@@ -1,0 +1,31 @@
+{
+  "name": "seidman-fpa",
+  "description": "FP&A and financial modeling skills from Carl Seidman — standards, builders, and audit tooling for Excel models that hold up to board-room and diligence scrutiny.",
+  "owner": {
+    "name": "Carl Seidman",
+    "url": "https://github.com/carlmsu1"
+  },
+  "plugins": [
+    {
+      "name": "seidman-financial-modeling",
+      "source": "./plugins/seidman-financial-modeling",
+      "description": "Universal financial modeling standards, an independent model auditor, and 13-week direct-method cash flow builders for A/R and A/P.",
+      "author": {
+        "name": "Carl Seidman"
+      },
+      "category": "finance",
+      "tags": [
+        "fpa",
+        "financial-modeling",
+        "excel",
+        "cash-flow",
+        "13-week",
+        "accounts-receivable",
+        "accounts-payable",
+        "restructuring",
+        "turnaround",
+        "audit"
+      ]
+    }
+  ]
+}
