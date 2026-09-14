@@ -6,7 +6,7 @@ These teach Claude to build and review financial models the way an experienced F
 
 ## Install
 
-### Claude Cowork or Claude Desktop or Claude for the Web
+### Claude Cowork or Claude Desktop
 
 1. Open the **Customize** menu and go to the **Plugins** tab.
 2. Under **Personal plugins**, click **+** and choose **Add marketplace**.
