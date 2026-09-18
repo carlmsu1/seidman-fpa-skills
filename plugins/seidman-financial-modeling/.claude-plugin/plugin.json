@@ -1,6 +1,6 @@
 {
   "name": "seidman-financial-modeling",
-  "description": "Standards and builders for board-room and PE-diligence grade financial models in Excel: universal Foundation standards, an independent model Auditor, and 13-week direct-method cash flow builders for A/R and A/P.",
+  "description": "Standards and builders for board-room and PE-diligence grade financial models in Excel: universal Foundation standards, an independent model Auditor, flexed-budget variance analysis, and monthly direct-method cash flow builders for A/R, A/P, payroll, capex/depreciation, and debt amortization — orchestrated by a master cash flow builder.",
   "author": {
     "name": "Carl Seidman"
   },
@@ -10,9 +10,14 @@
     "financial-modeling",
     "excel",
     "cash-flow",
-    "13-week",
+    "monthly",
     "accounts-receivable",
     "accounts-payable",
+    "payroll",
+    "capex",
+    "depreciation",
+    "debt-amortization",
+    "variance-analysis",
     "restructuring",
     "turnaround",
     "audit"
