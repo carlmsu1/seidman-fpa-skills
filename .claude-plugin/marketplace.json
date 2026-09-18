@@ -9,7 +9,7 @@
     {
       "name": "seidman-financial-modeling",
       "source": "./plugins/seidman-financial-modeling",
-      "description": "Universal financial modeling standards, an independent model auditor, and 13-week direct-method cash flow builders for A/R and A/P.",
+      "description": "Universal financial modeling standards, an independent model auditor, flexed-budget variance analysis, and monthly direct-method cash flow builders for A/R, A/P, payroll, capex/depreciation, and debt amortization.",
       "author": {
         "name": "Carl Seidman"
       },
@@ -19,9 +19,13 @@
         "financial-modeling",
         "excel",
         "cash-flow",
-        "13-week",
+        "monthly",
         "accounts-receivable",
         "accounts-payable",
+        "payroll",
+        "capex",
+        "debt-amortization",
+        "variance-analysis",
         "restructuring",
         "turnaround",
         "audit"
