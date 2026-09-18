@@ -1,5 +1,5 @@
 ---
-name: finance-workflow-deconstruction
+name: deconstruct-finance-workflow
 description: Use this skill whenever someone wants to deconstruct, document, or map a finance or accounting process before automating it with AI — month-end or quarter-end close, flux/variance analysis, FP&A reporting and forecasting, budgeting, AP/AR, bank or GL reconciliations, journal entry prep, board or investor reporting, revenue recognition, or any other recurring finance workflow. It turns a rough description of "how we close the books" or "how we build the forecast" into a structured Workflow Requirements document that an AI build step can act on. Always trigger this when a user says things like "deconstruct our close process," "map out our reconciliation workflow," "document how we build the budget," "break down our FP&A reporting cycle," or "help me figure out where AI fits in our accounting process" — even if they don't use the word "deconstruct." This is a finance-specialized adaptation of the general AI Workflow Framework's Deconstruct step, built for accountants, FP&A analysts, controllers, and CFOs rather than generic business workflows.
 ---
 
