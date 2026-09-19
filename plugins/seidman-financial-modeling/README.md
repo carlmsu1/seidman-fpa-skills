@@ -11,66 +11,49 @@ Standards and builders for financial models in Excel, written to hold up to boar
 | `financial-modeling-foundation` | Universal standards for **every** model: colour conventions, tab structure, sign conventions, hardcoding discipline, formula rules, circularity, dynamic arrays and the surface rule, the opening column, source classification and provenance, reconciliation protocol, check-tab design, documentation. |
 | `financial-modeling-auditor` | Independent audit of an existing model against Foundation — numeric re-derivation, provenance and reconciliation testing, structural hygiene, severity and materiality. Works on models Claude did not build. |
 | `variance-analysis` | Builds a flexed-budget variance bridge — actual vs. budget or a prior forecast — separating volume variance from rate/spending variance, with an optional price/volume/mix decomposition and an EBITDA bridge waterfall. Looks backward at completed periods rather than forecasting forward. |
-| `cash-flow-builder-ar` | The accounts receivable module of a monthly direct-method cash flow forecast. |
-| `cash-flow-builder-ap` | The accounts payable module of the same forecast, including payment prioritization under a cash constraint. |
-| `payroll-schedule-builder` | A roster-driven payroll forecast — computes at the payroll's true pay frequency (weekly/bi-weekly/semi-monthly) via a pay-period ledger, rolls up to monthly output. |
-| `capex-depreciation-builder` | An asset-by-asset (not pooled) capex and depreciation roll-forward — book methods only: straight-line, declining balance, units-of-production. |
-| `debt-amortization-builder` | A tranche-by-tranche term loan schedule — fixed or floating rate, fully amortizing, interest-only, or bullet/balloon, on a monthly periodicity. Term loans only; no revolver. |
-| `master-cash-flow-builder` | Orchestrates `cash-flow-builder-ar`, `cash-flow-builder-ap`, and `payroll-schedule-builder` (always), plus `capex-depreciation-builder` and/or `debt-amortization-builder` (where in scope), into one combined monthly cash flow model on a shared spine. Runs one consolidated interview, resolves tab-naming collisions across modules, builds a `Consolidated_Cash_Flow` roll-forward with correct-sign pulls from each module, and a light `PL_Memo` tab. |
+| `13-week-cash-flow-builder-ar` | The accounts receivable module of a 13-week direct-method cash flow forecast — aged and new-sales collections, aging waterfall, credit memos, uncollectibles by bucket, and customer segmentation. Routes between an invoice-level gather and a percentage-profile method depending on what the sources support. |
+| `13-week-cash-flow-builder-ap` | The accounts payable module of the same forecast — a consolidated payables roll-forward splitting the opening balance into significantly aged and existing pools, new purchase disbursements net of holdback, holdback accrual and release, and payment prioritization under a cash constraint. Separates observed payment behaviour from stated terms so the current stretch is visible. |
+| `13-week-cash-flow-builder-payroll` | A bottom-up, roster-driven payroll forecast — gross wages, employer payroll taxes with wage-base caps tracked off cumulative YTD wages, benefits, PTO liability roll-forward, and bonus accrual and payout. Separates the pay period the cost accrues in from the pay date the cash actually moves. |
+| `13-week-cash-flow-master` | Orchestrates `13-week-cash-flow-builder-ar`, `-ap`, and `-payroll` in sequence against one shared spine, consolidates their outputs into a single combined cash roll-forward, and routes to `variance-analysis` once actuals exist. The hub sequences and consolidates; it never invents a collection curve, a payment policy, or a wage calculation of its own — every mechanic belongs to its spoke skill. |
+| `deconstruct-finance-workflow` | Turns a rough description of a recurring finance or accounting process — month-end close, flux analysis, reconciliations, budgeting, board reporting — into a structured Workflow Requirements document that an AI build step can act on. A finance-specialized adaptation of the AI Workflow Framework's Deconstruct step. |
 
 ## How they fit together
+
+Hub-and-spoke. Foundation is the universal layer; the master skill is the hub; the three modules are the spokes.
 
 ```
                     financial-modeling-foundation
                      (universal layer — always first)
                                   │
-        ┌───────────┬────────────┼────────────┬──────────────┐
-        │            │            │            │              │
-   auditor      variance-    cash-flow-   cash-flow-      payroll-schedule-
-  (reviews an    analysis    builder-ar   builder-ap           builder
-  existing model  (backward-      │            │                  │
-  against          looking,       └─────────┬──┴──────────────────┘
-  Foundation)      standalone)               │  shared spine
-                                              │
-                              ┌───────────────┴────────────────┐
-                              │                                  │
-                    capex-depreciation-builder          debt-amortization-builder
-                        (overlay, if in scope)             (overlay, if in scope)
-                              │                                  │
-                              └───────────────┬──────────────────┘
-                                               │
-                                  master-cash-flow-builder
-                        (orchestrates AR + AP + payroll, always;
-                         capex and/or debt, where in scope)
+        ┌────────────┬────────────┼────────────┬─────────────┐
+        │            │            │            │             │
+   auditor      variance-    builder-ar   builder-ap   builder-payroll
+  (reviews an    analysis         │            │             │
+  existing model  (backward-      └────────────┼─────────────┘
+  against          looking,                    │
+  Foundation)      standalone)         shared weekly spine
+                        ▲                      │
+                        │           13-week-cash-flow-master
+                        └───────────  (sequences the three modules,
+                        once actuals   builds the one combined
+                        exist          cash roll-forward no
+                                       module builds alone)
+
+   deconstruct-finance-workflow — standalone; runs before any build,
+   to document the process a model or automation is meant to serve.
 ```
 
-**Foundation is a hard dependency for everything else.** Every builder, the Auditor, and Variance Analysis state it in their descriptions and refuse to proceed without it. Where a builder appears to contradict Foundation, Foundation wins and the conflict gets reported rather than resolved silently.
+## The spine
 
-**A/R, A/P, and payroll share one spine.** Whichever module builds it first, the others read off it rather than rebuilding it. `master-cash-flow-builder` is what actually runs all of them together on that shared spine and reconciles their outputs into one workbook — it's an orchestration layer, not a sixth set of financial mechanics, so it never re-derives DSO, wage-base caps, depreciation methods, or amortization math; each module skill still owns its own domain in full.
+Every cash flow build is anchored on a **Week 1 start date**. The model runs Monday-to-Sunday, thirteen columns. Each module derives every date from that anchor, which is what lets the hub consolidate them without reconciling three different calendars.
 
-## Building order
+The modules ask for the anchor in their own Phase 1 interview when run standalone. Run through the hub, it is asked once.
 
-The forward-looking builders (A/R, A/P, payroll, capex, debt) each follow the same shape:
+## Build surface
 
-1. **Interview** — two phases: facts the modeler knows without opening a ledger, then sources and methodology.
-2. **Classify and reconcile the sources** — by column shape, never by filename; reconcile before a single forecast cell is written.
-3. **Choose the method** — where the module has more than one mechanical route (e.g. A/R's invoice-level vs. percentage-profile fork, A/P's timing-and-policy fork).
-4. **Build** — assumptions tab → spine → schedule assumptions → roll forward → method mechanic.
-5. **Checks** — on the shared `Checks` tab, per Foundation.
+Each builder determines its surface before anything else, because it changes the technique for every period-driven row:
 
-`master-cash-flow-builder` adds a scope question before any of that ("which of A/R, A/P, payroll, capex, debt does this engagement need?"), then runs one consolidated version of steps 1–2 across every in-scope module before building each one in turn, followed by `Consolidated_Cash_Flow` and `PL_Memo`.
+- **Claude for Excel** (live Excel 365 workbook) — the full dynamic-array toolkit. Header spine, profile rows, and roll-forward are built as spilling formulas.
+- **Claude.ai chat or Cowork** (file delivered as a download, LibreOffice recalculation in the pipeline) — no spilling arrays. One formula copied identically across every period column.
 
-`variance-analysis` and `financial-modeling-auditor` sit outside this forward-looking chain — variance analysis explains periods that already happened, and the auditor reviews a finished model rather than building one.
-
-## Surface matters
-
-Foundation's dynamic-array rule is surface-dependent and non-optional:
-
-- **Claude for Excel** (live workbook) — full dynamic-array toolkit available and encouraged.
-- **Claude.ai chat or Cowork** (file delivered as a download) — no spilling arrays. LibreOffice recalculation in the pipeline will corrupt them, sometimes silently.
-
-Every builder asks which surface it's on before anything else.
-
-## License
-
-See the repository [LICENSE](../../LICENSE).
+Building for the wrong surface silently ships a broken file, so the skills ask when it isn't obvious.
