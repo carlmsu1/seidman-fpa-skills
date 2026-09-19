@@ -13,7 +13,11 @@ These teach Claude to build and review financial models the way an experienced F
 3. Enter: `carlmsu1/seidman-fpa-skills`
 4. Click **Sync**, then install **seidman-financial-modeling**.
 
-The skills are then available in Cowork automatically — Claude picks the right one based on what you ask.
+The skills are then available automatically — Claude picks the right one based on what you ask.
+
+### Claude for Excel, PowerPoint, and Word
+
+Install the plugin as above. Inside the add-in, the **+** button below the chat input lists your plugins and the skills each one carries.
 
 ### Claude Code
 
@@ -30,35 +34,31 @@ Updates reach you automatically. To pull them immediately:
 /plugin marketplace update seidman-fpa
 ```
 
+An installed plugin stays on the version it was installed at until it syncs. If the skill names you see don't match this README, you're on an older build — sync the marketplace.
+
 ## What you get
 
 | Skill | What it does |
 |---|---|
-| **financial-modeling-foundation** | The universal standards every model follows: colour conventions, tab structure, sign conventions, hardcoding discipline, formula rules, source classification, reconciliation protocol, check-tab design. Load-bearing for every other skill below. |
+| **financial-modeling-foundation** | The universal standards every model follows: colour conventions, tab structure, sign conventions, hardcoding discipline, formula rules, source classification, reconciliation protocol, check-tab design. Load-bearing for the builder and the auditor below. |
+| **13-week-cash-flow-builder-ar** | The accounts receivable module of a 13-week direct-method cash flow forecast — aged and new-sales collections, aging waterfall, credit memos, uncollectibles by bucket, customer segmentation. |
 | **financial-modeling-auditor** | Audits an existing model — yours or a client's — by re-deriving figures, testing provenance and reconciliation, and reviewing structural hygiene. Reports findings; doesn't change your file. |
-| **variance-analysis** | Builds a flexed-budget variance bridge (actual vs. budget/prior forecast) — separates volume variance from rate/spending variance, with an optional price/volume/mix decomposition and an EBITDA bridge waterfall. |
-| **cash-flow-builder-ar** | Builds the accounts receivable module of a monthly direct-method cash flow forecast — aging waterfall, collection curves, credit memos, uncollectibles. |
-| **cash-flow-builder-ap** | Builds the accounts payable module of the same forecast, including payment prioritization when cash is constrained. |
-| **payroll-schedule-builder** | Builds a roster-driven payroll forecast — computes at the payroll's true pay frequency, rolls up to a monthly spine. |
-| **capex-depreciation-builder** | Builds an asset-by-asset capex and depreciation roll-forward (book methods: straight-line, declining balance, units-of-production). |
-| **debt-amortization-builder** | Builds a tranche-by-tranche term loan amortization schedule — fixed or floating rate, fully amortizing, interest-only, or bullet. |
-| **master-cash-flow-builder** | Orchestrates A/R, A/P, payroll, and optionally capex and debt, into one combined monthly cash flow model on a shared spine — one interview, one set of tabs, a `Consolidated_Cash_Flow` roll-forward, and a light `PL_Memo`. |
 
 ## Try it
 
 Ask Claude something like:
 
-> Build me a monthly cash flow forecast. I have an A/R aging, an A/P aging, and payroll census data.
+> Build me the A/R module of a 13-week cash flow forecast. I have an open A/R aging and a settlement history.
 
 > Audit this model for me. [attach a workbook]
 
-> Build a variance bridge — actual vs. budget for Q3.
-
 Claude will interview you before building — which files you have, which conventions you want, and which of several methods fits your data. That interview is the point: the questions are the ones a careful analyst would ask before touching a spreadsheet.
+
+The first question the cash flow builder asks is the **Week 1 start date**. The model runs Monday-to-Sunday, and every date in it is derived from that anchor. If you can't answer it, the build stops there — by design.
 
 ## Where these work best
 
-The builders detect whether they're running in **Claude for Excel** (a live workbook) or in **Cowork / chat** (a file you download), and change technique accordingly. Both work. Excel gets the more capable version.
+The builder detects whether it's running in **Claude for Excel** (a live workbook) or in **Cowork / chat** (a file you download), and changes technique accordingly. Both work. Excel gets the more capable version, because the full dynamic-array toolkit is available there.
 
 ## Status
 
