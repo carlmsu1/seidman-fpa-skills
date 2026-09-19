@@ -9,7 +9,7 @@
     {
       "name": "seidman-financial-modeling",
       "source": "./plugins/seidman-financial-modeling",
-      "description": "Universal financial modeling standards, an independent model auditor, flexed-budget variance analysis, and monthly direct-method cash flow builders for A/R, A/P, payroll, capex/depreciation, and debt amortization.",
+      "description": "Universal financial modeling standards, an independent model auditor, flexed-budget variance analysis, a finance workflow deconstructor, and 13-week direct-method cash flow builders for A/R, A/P, and payroll — orchestrated by a master hub on one shared weekly spine.",
       "author": {
         "name": "Carl Seidman"
       },
@@ -19,17 +19,21 @@
         "financial-modeling",
         "excel",
         "cash-flow",
-        "monthly",
+        "13-week",
+        "weekly",
+        "short-term-liquidity",
         "accounts-receivable",
         "accounts-payable",
         "payroll",
-        "capex",
-        "debt-amortization",
         "variance-analysis",
+        "workflow-design",
         "restructuring",
         "turnaround",
         "audit"
       ]
+    }
+  ]
+}
     }
   ]
 }
